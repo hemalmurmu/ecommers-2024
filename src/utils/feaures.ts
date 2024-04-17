@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose, { Document } from "mongoose"
 import { InvalidateCacheProps, OrderItem } from "../types/types";
 import { myChache } from "../app";
 import { Product } from "../models/product";
@@ -74,8 +74,9 @@ export const getInventories=async({categories,productCount,}:{categories: string
 
 interface MyDocument extends Document{
     createdAt:Date;
-    discount:number;
-    total:number;
+    discount?:number;
+    total?:number
+  
 }
 
 type FuncProps={
@@ -94,7 +95,7 @@ export const getBarData=({length,docArr,today,property}:FuncProps)=>{
         const monthDiff = (today.getMonth() - creationDate.getMonth()+12)%12;
 
         if(monthDiff<length){
-            data[length-monthDiff-1]+= property ? order[property]:1;
+            data[length-monthDiff-1]+= property ? order[property]!:1;
         }
     })
     return data;         
